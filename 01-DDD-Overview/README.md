@@ -41,19 +41,19 @@ Para resumir, utiliza siempre un lenguaje ubicuo (es decir, la misma terminolog�
 
 Por otro lado, durante nuestra implementación de DDD, debemos tener cuidado con ciertas prácticas que son demasiado comunes entre los desarrolladores de software. Estas son:
 
-### 1) Utilizar una visión centrada en los datos al modelar el dominio del problema
+### 1. Utilizar una visión centrada en los datos al modelar el dominio del problema
 
 Normalmente, el modelo de datos es lo primero que un arquitecto/desarrollador empieza a diseñar. Siempre consideran que los datos son lo más importante porque los datos son todo lo que necesitamos para informar. Si empiezas con DDD, debes cambiar esta mentalidad. Los datos por sí solos no tienen sentido. Sólo la lógica da un significado a los datos, y los mismos datos pueden tener un significado diferente en contextos diferentes. Por lo tanto, **debemos empezar con el contexto y la lógica en lugar de los datos**.
 
-### 2) Centrarse en detalles de implementación como las entidades, los objetos de valor, los servicios, las fábricas y los repositorios en lugar de los conceptos básicos
+### 2. Centrarse en detalles de implementación como las entidades, los objetos de valor, los servicios, las fábricas y los repositorios en lugar de los conceptos básicos
 
 Las entidades, los objetos de valor, los repositorios, etc., no tienen sentido hasta que hayamos definido el lenguaje ubicuo, los contextos delimitados y las interfaces/el contrato de software elaborado. Si empezamos demasiado pronto con los detalles de implementación como las entidades, es muy probable que el resultado sea un dominio anémico rodeado de un montón de servicios y lógica de negocio dispersos por todas partes.
 
-### 3) Utilizar términos y conceptos genéricos y específicos del desarrollador al implementar la aplicación
+### 3. Utilizar términos y conceptos genéricos y específicos del desarrollador al implementar la aplicación
 
 Nunca debemos utilizar conceptos como guardar, actualizar, eliminar, manejar, gestionar, etc. Esos conceptos son demasiado técnicos, conceptos abstractos sin significado específico. En su lugar, debemos centrarnos en los conceptos de negocio. Esos conceptos mencionados (es decir, guardar, actualizar, etc.) no están relacionados con los conceptos empresariales. Para entender esto, me animo a imaginar siempre al cliente haciendo sus recados/negocios sin ordenadores (haciendo tareas específicas manualmente). Por lo tanto, siempre hay que pensar desde la perspectiva del experto en negocios/dominio, y dar un contexto claro al respecto. Evite los términos genéricos que pueden dar lugar a significados diferentes en contextos diferentes y no específicos.
 
-### 4) Sobrevalorar las transacciones de la BD en lugar de centrarse en los procesos o transacciones de negocio
+### 4. Sobrevalorar las transacciones de la BD en lugar de centrarse en los procesos o transacciones de negocio
 
 Dentro de DDD, las transacciones de negocio son más importantes que las transacciones de BD. Las transacciones de BD son *ACID*, *fuertemente consistentes* y de *corta duración*, mientras que las transacciones de negocio no lo son. De hecho, en la vida real, no conocemos las transacciones de la BD, sólo conocemos las transacciones de negocio. Por ejemplo, imagina que estás sentado en un restaurante y pides algo de comida o bebida. Dentro de la transacción del pedido, te des cuenta o no, habrá un proceso con algunas tareas asíncronas con muchos posibles cambios de estado inconsistentes; al final, todos los estados serán consistentes (*eventualmente consistentes*). Este proceso de caja negra funciona, es escalable y es ampliamente aceptado por todos. Por lo tanto, con DDD, no pienses nunca en transacciones de BD. En su lugar, piensa siempre en los procesos del mundo real, como las acciones (comportamientos) y sus posibles resultados, o cómo compensar las acciones si se producen fallos.
 
@@ -129,7 +129,7 @@ A menudo encuentro que muchos desarrolladores utilizan el término VO (value obj
 
 Como se muestra en la imagen de abajo, VO y DTO son subconjuntos de un POJO/POCO. Una entidad es también un subconjunto de POJO/POCO.
 
-![POJO/POCO](/Users/rorden/Desktop/pojo-poco.png)
+![POJO/POCO](./pojo-poco.png)
 
 En la representación anterior, POJO y POCO pueden utilizarse indistintamente. Ambos se refieren a cosas similares. Ambos son simplemente objetos de dominio que representan principalmente el objeto de dominio/negocio dentro de la aplicación de negocio.
 
@@ -137,7 +137,7 @@ El término POJO (plain old Java object) fue acuñado por Martin Fowler y es muy
 
 Como se mencionó anteriormente, DTO, VO y entidad son sólo un subconjunto de POJO/POCO. Sin embargo, son realmente cosas diferentes como se describe a continuación:
 
-![Comparison Table](/Users/rorden/Desktop/comparison-table.png)
+![Comparison Table](./comparison-table.png)
 
 DTO es simplemente un estúpido contenedor de datos (sólo contiene datos sin ninguna lógica). Por lo tanto, es anémico en general (sólo contiene atributos y getter/setter). DTO es absolutamente inmutable. Usualmente, usamos DTO para transferir el objeto entre capas y niveles en una sola aplicación o entre aplicación a aplicación o [JVM a JVM](https://dzone.com/articles/jvm-architecture-explained) (mayormente útil entre redes para reducir múltiples llamadas de red).
 
@@ -167,7 +167,7 @@ No tienes que usar la Arquitectura Cebolla aunque implementes DDD. Y no estás o
 
 En la arquitectura tradicional, la estructura de la aplicación se compone de tres niveles/capas como se muestra a continuación:
 
-![img](/Users/rorden/Desktop/ddd-con-arquitectura_tradicional.png)
+![img](./ddd-con-arquitectura_tradicional.png)
 
 Como podemos ver, en esta arquitectura particular, cada capa depende en gran medida de las capas por debajo de ella, y cada capa normalmente también dependerá de algunas infraestructuras comunes (por ejemplo, marcos o servicios de utilidad). Con este tipo de arquitectura, será difícil dar una separación de preocupaciones debido al acoplamiento creado entre cada capa (cada capa está acoplada a las capas por debajo de ella, y cada capa a menudo acoplada a varias preocupaciones de infraestructura). Sí, el acoplamiento es importante para crear la interacción entre los componentes de nuestro sistema, pero lo que estoy tratando de decir aquí es que esta arquitectura particular crea un acoplamiento innecesario.
 
@@ -177,7 +177,7 @@ Por otro lado, el mayor infractor (y más común) es el acoplamiento de la inter
 
 Aquí es donde la Arquitectura de Cebolla viene al rescate :-). Echa un vistazo al siguiente diagrama de la Arquitectura de la Cebolla.
 
-![img](/Users/rorden/Desktop/ddd-con-onion_architecture.png)
+![img](./ddd-con-onion_architecture.png)
 
 Hay muchos aspectos de la Arquitectura de la Cebolla, pero el objetivo principal es cómo controla el acoplamiento. La regla básica que hay que tener en cuenta es que todo el acoplamiento es hacia el centro. Por ejemplo, en el diagrama representado podemos decir lo siguiente:
 
@@ -257,7 +257,7 @@ Para la implementación del código, voy a empezar por implementar algunas de la
 
 En primer lugar, voy a mostrar a continuación el proceso común de la cesta de la compra. Tenga en cuenta que lo que voy a mostrar aquí se limita al contexto limitado de la cesta de la compra, lo que significa que sólo nos centraremos en el proceso de cómo el usuario/comprador elige el artículo y la adición de ese artículo en particular en su carro, posteriormente, continuar con la compra. En cuanto a la parte de facturación/pago, será en el contexto delimitado del servicio de pago.
 
-![img](/Users/rorden/Desktop/ddd-source_code_example_diagram.png)
+![img](./ddd-source_code_example_diagram.png)
 
 Vale la pena mencionar aquí, que lo que está resaltado en color gris estaba fuera de nuestro `contexto de carrito de compras`. Por lo tanto, no nos ocuparemos de los detalles esenciales de esos objetos dentro de nuestra implementación de código, ya que esas cosas estarían en otros servicios (por ejemplo, `el servicio de catálogo de productos` y `el servicio de usuario`). Sin embargo, seguiremos teniendo esos objetos dentro de nuestro código, en el `contexto` de lo que necesita nuestro carrito de la compra. Por ejemplo, no necesitaremos la información de las credenciales del usuario en nuestra `cesta de la compra`, ya que eso debería ser atendido desde el `contexto del servicio de usuario`. Básicamente, sólo necesitamos la información del usuario que está relacionada con el carro de la compra, como: `user_session_id`, `dirección de envío`, `dirección de facturación` (además, la información de la dirección también debe ser atendida desde otro servicio, por ejemplo: `servicio de dirección`, incluso esto es opcional).
 
