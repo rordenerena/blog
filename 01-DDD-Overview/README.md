@@ -41,19 +41,19 @@ Para resumir, utiliza siempre un lenguaje ubicuo (es decir, la misma terminolog�
 
 Por otro lado, durante nuestra implementación de DDD, debemos tener cuidado con ciertas prácticas que son demasiado comunes entre los desarrolladores de software. Estas son:
 
-### 1. Utilizar una visión centrada en los datos al modelar el dominio del problema
+### 1 - Utilizar una visión centrada en los datos al modelar el dominio del problema
 
-Normalmente, el modelo de datos es lo primero que un arquitecto/desarrollador empieza a diseñar. Siempre consideran que los datos son lo más importante porque los datos son todo lo que necesitamos para informar. Si empiezas con DDD, debes cambiar esta mentalidad. Los datos por sí solos no tienen sentido. Sólo la lógica da un significado a los datos, y los mismos datos pueden tener un significado diferente en contextos diferentes. Por lo tanto, **debemos empezar con el contexto y la lógica en lugar de los datos**.
+Normalmente, el modelo de datos es lo primero que un arquitecto/desarrollador empieza a diseñar. Siempre consideran que los datos son lo más importante porque los datos son todo lo que necesitamos para informar. Si empiezas con DDD, debes cambiar esta mentalidad. Los datos por sí solos no tienen sentido. Sólo la lógica da un significado a los datos, y los mismos datos pueden tener un significado diferente en contextos diferentes. Por lo tanto, **debemos empezar con el contexto y la lógica en lugar de los datos** . 
 
-### 2. Centrarse en detalles de implementación como las entidades, los objetos de valor, los servicios, las fábricas y los repositorios en lugar de los conceptos básicos
+### 2 - Centrarse en detalles de implementación como las entidades, los objetos de valor, los servicios, las fábricas y los repositorios en lugar de los conceptos básicos
 
 Las entidades, los objetos de valor, los repositorios, etc., no tienen sentido hasta que hayamos definido el lenguaje ubicuo, los contextos delimitados y las interfaces/el contrato de software elaborado. Si empezamos demasiado pronto con los detalles de implementación como las entidades, es muy probable que el resultado sea un dominio anémico rodeado de un montón de servicios y lógica de negocio dispersos por todas partes.
 
-### 3. Utilizar términos y conceptos genéricos y específicos del desarrollador al implementar la aplicación
+### 3 - Utilizar términos y conceptos genéricos y específicos del desarrollador al implementar la aplicación
 
 Nunca debemos utilizar conceptos como guardar, actualizar, eliminar, manejar, gestionar, etc. Esos conceptos son demasiado técnicos, conceptos abstractos sin significado específico. En su lugar, debemos centrarnos en los conceptos de negocio. Esos conceptos mencionados (es decir, guardar, actualizar, etc.) no están relacionados con los conceptos empresariales. Para entender esto, me animo a imaginar siempre al cliente haciendo sus recados/negocios sin ordenadores (haciendo tareas específicas manualmente). Por lo tanto, siempre hay que pensar desde la perspectiva del experto en negocios/dominio, y dar un contexto claro al respecto. Evite los términos genéricos que pueden dar lugar a significados diferentes en contextos diferentes y no específicos.
 
-### 4. Sobrevalorar las transacciones de la BD en lugar de centrarse en los procesos o transacciones de negocio
+### 4 - Sobrevalorar las transacciones de la BD en lugar de centrarse en los procesos o transacciones de negocio
 
 Dentro de DDD, las transacciones de negocio son más importantes que las transacciones de BD. Las transacciones de BD son *ACID*, *fuertemente consistentes* y de *corta duración*, mientras que las transacciones de negocio no lo son. De hecho, en la vida real, no conocemos las transacciones de la BD, sólo conocemos las transacciones de negocio. Por ejemplo, imagina que estás sentado en un restaurante y pides algo de comida o bebida. Dentro de la transacción del pedido, te des cuenta o no, habrá un proceso con algunas tareas asíncronas con muchos posibles cambios de estado inconsistentes; al final, todos los estados serán consistentes (*eventualmente consistentes*). Este proceso de caja negra funciona, es escalable y es ampliamente aceptado por todos. Por lo tanto, con DDD, no pienses nunca en transacciones de BD. En su lugar, piensa siempre en los procesos del mundo real, como las acciones (comportamientos) y sus posibles resultados, o cómo compensar las acciones si se producen fallos.
 
@@ -74,11 +74,11 @@ En esta segunda parte, continuaré con una de las cosas más importantes que hay
 
 Abróchense los cinturones!. Ahora repasamos los detalles de esos bloques.
 
-## 1. Entidades
+## 1 - Entidades
 
 Una entidad es un objeto simple que tiene una identidad (ID) y es potencialmente mutable. Cada entidad se identifica de forma única por un ID y no por un atributo; por lo tanto, dos entidades pueden considerarse iguales (igualdad de identificadores) si ambas tienen el mismo ID aunque tengan diferentes atributos. Esto significa que el estado de la entidad puede cambiarse en cualquier momento, pero mientras dos entidades tengan el mismo ID, ambas se consideran iguales independientemente de los atributos que tengan.
 
-## 2. Objetos de valor
+## 2 - Objetos de valor
 
 Los objetos de valor son inmutables. No tienen identidad (ID) como la que encontramos en la entidad. Dos objetos de valor pueden considerarse iguales si ambos tienen el mismo tipo y los mismos atributos (aplicados a todos sus atributos). 
 
@@ -90,7 +90,7 @@ Algunos beneficios de los objetos de valor:
 2. Las entidades pueden ser liberadas de la complejidad lógica.
 3. Mejoran la extensibilidad, especialmente para cuestiones de testabilidad y concurrencia si se utilizan correctamente.
 
-## 3. Raíces agregadas
+## 3 - Raíces agregadas
 
 La raíz agregada es una entidad que se une a otras entidades. Además, la raíz del agregado es en realidad una parte del agregado (colección/grupo de objetos asociados que se tratan como una sola unidad a efectos de cambios de datos). Por lo tanto, cada agregado consta en realidad de una raíz de agregado y un límite. Por ejemplo, la relación entre Order y OrderLineItem dentro de SalesOrderDomain puede considerarse como un agregado en el que Order actúa como raíz del agregado, mientras que OrderLineItem es el hijo de Order dentro del límite de SalesOrder.
 
@@ -98,7 +98,7 @@ Una de las características clave de una raíz agregada es que los objetos exter
 
 La otra cosa es que todas las operaciones dentro del dominio deben, siempre que sea posible, pasar por una raíz agregada. Las fábricas, los repositorios y los servicios son algunas excepciones a esto, pero siempre que sea posible, si puedes crear o requerir que una operación pase por la raíz agregada, eso será mejor.
 
-## 4. Repositorios
+## 4 - Repositorios
 
 Los repositorios se utilizan principalmente para tratar el almacenamiento. En realidad, son uno de los conceptos más importantes en el DDD porque han abstraído muchas de las preocupaciones de almacenamiento (es decir, alguna forma/mecanismo de almacenamiento).
 
@@ -106,7 +106,7 @@ La implementación del repositorio podría ser un almacenamiento basado en archi
 
 No hay que confundir un repositorio con el almacén de datos. El trabajo de un repositorio es almacenar las raíces agregadas. Por debajo de eso, la implementación de los repositorios puede tener que hablar con múltiples ubicaciones de almacenamiento diferentes para construir los agregados. Por lo tanto, una sola raíz agregada podría ser extraída de una API REST, así como de una base de datos o archivos. Usted puede envolver esos en algo llamado el almacén de datos, pero el repositorio es una especie de capa adicional de una abstracción en la parte superior de todos los almacenes de datos individuales. Por lo general, implemento el repositorio como una interfaz dentro de la capa de servicios de dominio/dominio dentro de la arquitectura de cebolla, y luego la lógica de implementación de la interfaz del repositorio se va a definir en la capa de infraestructura.
 
-## 5. Fábricas
+## 5 - Fábricas
 
 Las fábricas se utilizan para dar una abstracción a la construcción de objetos (ver [patrón de diseño de fábrica de GOF](http://www.oodesign.com/factory-pattern.html)).
 
@@ -115,7 +115,7 @@ A menudo, cuando se necesita un método de fábrica para una raíz agregada, és
 
 Normalmente, las fábricas también se implementan como una interfaz dentro de la capa de servicios de dominio/dominio con la lógica de implementación se definirá en la capa de infraestructura.
 
-## 6. Servicios
+## 6 - Servicios
 
 Un servicio existe básicamente para proporcionar un hogar para las operaciones que no encajan del todo en una raíz agregada. 
 
